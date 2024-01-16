@@ -37,7 +37,7 @@ RUN rm -rf wordpress/wp-content/plugins/akismet
 
 # Separate WordPress static files
 RUN cp -r wordpress wordpress-static && \
-    cd wordpress-static && \ 
+    cd wordpress-static && \
     find ./ -name '*.php' -delete && \
     # Keep only the static files inside the directories like wp-admin or wp-content:
     find . -maxdepth 1 -type f -delete && \
@@ -140,6 +140,16 @@ COPY ./build-assets/export-wxz.php /root/
 RUN cd wordpress && \
     cp /root/export-wxz.php wp-content/mu-plugins/export-wxz.php
 
+# === Preinstall plugins ===
+
+RUN cd wordpress/wp-content/mu-plugins && \
+    # Install plugins
+	curl -L https://demo.bigbite.net/revisions/ncu-newspress-revisions.zip -o ncu-newspress-revisions.zip && \
+	unzip ncu-newspress-revisions.zip && \
+	rm ncu-newspress-revisions.zip && \
+	# Create entry file in mu-plugins root
+	echo "<?php require_once __DIR__.'/ncu-newspress-revisions/plugin.php';" > ncu-newspress-revisions.php;
+
 # Strip whitespaces from PHP files.
 # PHP 7.4 is a safe choice here: `php -w` ran on 7.4
 # produces code compatible with PHP 8+, but the reverse
@@ -165,7 +175,7 @@ RUN cd wordpress && \
     sed "s/<?php/<?php define( 'CONCATENATE_SCRIPTS', false );/" wp-config.php > wp-config.php.new && \
     mv wp-config.php.new wp-config.php
 
-# Bundle the .data file using Emscripten 
+# Bundle the .data file using Emscripten
 RUN mv wordpress /wordpress && \
     /emsdk/upstream/emscripten/tools/file_packager.py \
     /root/output/wp.data \
