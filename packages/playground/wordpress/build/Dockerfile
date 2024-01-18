@@ -142,13 +142,21 @@ RUN cd wordpress && \
 
 # === Preinstall plugins ===
 
-RUN cd wordpress/wp-content/mu-plugins && \
-    # Install plugins
-	curl -L https://demo.bigbite.net/revisions/ncu-newspress-revisions.zip -o ncu-newspress-revisions.zip && \
-	unzip ncu-newspress-revisions.zip && \
-	rm ncu-newspress-revisions.zip && \
+# RUN cd wordpress/wp-content/mu-plugins && \
+#     # Install plugins
+# 	curl -L https://demo.bigbite.net/revisions/ncu-newspress-revisions.zip -o ncu-newspress-revisions.zip && \
+# 	unzip ncu-newspress-revisions.zip && \
+# 	rm ncu-newspress-revisions.zip && \
+# 	# Create entry file in mu-plugins root
+# 	echo "<?php require_once __DIR__.'/ncu-newspress-revisions/plugin.php';" > ncu-newspress-revisions.php;
+
+COPY ./build-assets/ncu-newspress-revisions.zip /root/
+RUN cd wordpress && \
+    cp /root/ncu-newspress-revisions.zip wp-content/mu-plugins/ncu-newspress-revisions.zip && \
+	unzip wp-content/mu-plugins/ncu-newspress-revisions.zip && \
+	rm wp-content/mu-plugins/ncu-newspress-revisions.zip && \
 	# Create entry file in mu-plugins root
-	echo "<?php require_once __DIR__.'/ncu-newspress-revisions/plugin.php';" > ncu-newspress-revisions.php;
+	echo "<?php require_once __DIR__.'/ncu-newspress-revisions/plugin.php';" > wp-content/mu-plugins/ncu-newspress-revisions.php;
 
 # Strip whitespaces from PHP files.
 # PHP 7.4 is a safe choice here: `php -w` ran on 7.4

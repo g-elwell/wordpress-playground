@@ -1,1 +1,0 @@
-{"version":3,"file":"../styles/editor-245c3ed8.css","mappings":"4DAAA,2CACE,UAAW","sources":["webpack://ncu-newspress-revisions/./src/editor/styles/styles.scss"],"sourcesContent":[".block-editor-page .revisions-toolbar-icon {\n  width: 36px;\n}\n"],"names":[],"sourceRoot":""}

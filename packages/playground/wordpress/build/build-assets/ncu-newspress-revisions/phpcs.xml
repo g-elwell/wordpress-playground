@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<ruleset name="Revisions Rules">
-  <!-- Package directories. -->
-  <rule ref="BigBite" />
-</ruleset>
